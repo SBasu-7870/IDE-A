@@ -1,12 +1,12 @@
 import React from 'react'
-import Editor from '../components/Editor'
+import IDE from '../components/IDE'
 import Navbar from '../components/Navbar'
 
 function Landing() {
   return (
     <>
     <Navbar/>
-    <Editor/>
+    <IDE/>
     </>
   )
 }
