@@ -9,12 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-tailwind/react": "^1.4.2",
     "@monaco-editor/react": "^4.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
     "socket.io-client": "^4.6.0",
     "uuid": "^9.0.0",
+    "vite-plugin-svgr": "^2.4.0",
     "y-monaco": "^0.1.4",
     "y-webrtc": "^10.2.4",
     "yjs": "^13.5.45"

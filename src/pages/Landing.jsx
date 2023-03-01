@@ -1,90 +1,33 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { v4 as uuid } from "uuid";
+import HandCoding from '../assets/HandCoding.svg'
+import DialogComponent from '../components/DialogComponent';
 
 function Landing() {
-  const [roomId,setRoomId] = useState("");
-  const navigate = useNavigate();
-  const handleCreateRoom = () => {
-    const newRoomId = Math.random().toString(36).substring(2, 7);
-    setRoomId(newRoomId);
-    navigate(`/room/${newRoomId}`,{state:{roomId: newRoomId}});
-  };
+  const [dialog,setDialog] = useState(false);
 
-  const handleJoinRoom = () => {
-    if(roomId) {
-      navigate(`/room/${roomId}`,{state:{roomId}});
-    }else{
-      navigate('/');
-    }
-  };
+  const handleOnClick = () => {
+    setDialog(!dialog);
+  }
 
   return (
     <>
     <Navbar/>
-    <div className="grid justify-items-center">
-      <h2 className="mt-4">Welcome</h2>
-      <div className="block p-6 rounded-lg shadow-lg bg-white max-w-lg mt-6">
-  <form>
-    <div className="form-group mb-6">
-      <label htmlFor="exampleInputRoom1" className="form-label inline-block mb-2 text-gray-700">Enter Room ID</label>
-      <input type="text" className="form-control
-        block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputRoom1"
-        aria-describedby="RoomIdHelp" onChange={(e) => setRoomId(e.target.value)}
-        placeholder="Enter room ID"/>
-    </div>
-    <div className='flex justify-between items-center'>
-    <button type="submit" className="
-      px-6
-      py-2.5
-      bg-blue-600
-      text-white
-      font-medium
-      text-xs
-      leading-tight
-      uppercase
-      rounded
-      shadow-md
-      hover:bg-blue-700 hover:shadow-lg
-      focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-      active:bg-blue-800 active:shadow-lg
-      transition
-      duration-150
-      ease-in-out" onClick={handleCreateRoom}>Create Room</button>
-      <button type="submit" className="
-      px-6
-      py-2.5
-      bg-blue-600
-      text-white
-      font-medium
-      text-xs
-      leading-tight
-      uppercase
-      rounded
-      shadow-md
-      hover:bg-blue-700 hover:shadow-lg
-      focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-      active:bg-blue-800 active:shadow-lg
-      transition
-      duration-150
-      ease-in-out" onClick={handleJoinRoom}>Join Room</button>
-    </div>  
-  </form>
-</div>
+    <div className="h-screen w-full">
+      <div className="flex flex-wrap justify-center justify-items-center mt-16 mb-4 mx-6 p-2">
+        <div className="w-1/2 p-4 ">
+        <p className="text-7xl font-mono font-bold antialiased ">
+          <div className="mt-4 text-orange-500">TEAMWORK</div>
+          <div className="mt-4 text-cyan-600">MAKES</div>
+          <div className="mt-4 text-orange-500">DREAMWORK</div>
+        </p>   
+        <button type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" onClick={handleOnClick}>Get Started</button>
+        </div>
+        {dialog && <DialogComponent dialog={dialog} handleChange={handleOnClick}/>}
+       <div className='w-1/2 p-10'>
+       <img src={HandCoding} alt="logo" style={{height: 500, width:500}}/>
+       </div>
+      </div> 
     </div>
     </>
   )
