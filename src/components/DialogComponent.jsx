@@ -34,7 +34,7 @@ function DialogComponent(props) {
       <DialogHeader>Get started</DialogHeader>
       <DialogBody divider>
         <div className="w-72">
-          <Input label="Enter Room Id" placeholder="Room ID" />
+          <Input label="Enter Room Id" placeholder="Room ID" onChange={(e)=> setRoomId(e.target.value)}/>
         </div>
       </DialogBody>
       <DialogFooter>
