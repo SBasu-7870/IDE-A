@@ -11,10 +11,10 @@ IDE-A is a collaborative text editor built on ReactJS frontend with Yjs, WebRTC,
 
     Fork the repository to your GitHub account.
     Clone the forked repository to your local machine.
-    Install the required dependencies by running ```npm i``` in the project directory.
-    Install PeerJS globally by running ```npm i peer -g.```
-    Start the PeerJS server by running the following command: ```peerjs --port 9000 --key peerjs --path /.```
-    Start the client by running ```npm run dev.```
+    Install the required dependencies by running `npm i` in the project directory.
+    Install PeerJS globally by running `npm i peer -g.`
+    Start the PeerJS server by running the following command: `peerjs --port 9000 --key peerjs --path /.`
+    Start the client by running `npm run dev.`
 
 ## Dependencies
 
