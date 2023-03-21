@@ -3,7 +3,6 @@ IDE-A
 
 IDE-A is a collaborative text editor built on ReactJS frontend with Yjs, WebRTC, PeerJS, and Tailwind CSS. This project enables real-time document editing between users in a room and also provides a voice call feature between them.
 
-=================
 
 ## Getting Started
 
