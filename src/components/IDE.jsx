@@ -9,14 +9,11 @@ import Navbar from './Navbar';
 import Peer from "peerjs";
 import { Button } from "@material-tailwind/react";
 import { IndexeddbPersistence } from 'y-indexeddb';
-
+import DOUsername from 'do_username';
+import "./IDE.css";
 
 
 function IDE() {
-  const [localStream, setlocalStream] = useState({}); //store localstream
-  const [currentPeer, setCurrentPeer] = useState(null);//store the current peer instance
-  const [currentPeerId, setCurrentPeerId] = useState(null);//store the current peer id. This is obtained from Yjs and is used to determine the current peer
-  const [peers,setPeers] = useState([]); // keep track of connected peers
   const [users, setUsers] = useState(null); //keep track of users in the room (Yjs)
   const location = useLocation();
   const roomId = location.state.roomId;
@@ -39,6 +36,7 @@ function IDE() {
   ]
 
   const myColor = usercolors[Math.floor(Math.random() * usercolors.length)];
+  const userName = DOUsername.generate(10);
 
   const handleEditorDidMount = (editor,monaco) => { //editor instance and monaco from the <Editor/> (defined by Monaco Editor) 
     editorRef.current = editor;  //Initialise Yjs
@@ -52,19 +50,11 @@ function IDE() {
       console.log('content from the database is loaded')
     })
    
-    navigator.mediaDevices.getUserMedia({audio: true})
-    .then((stream)=>{
-      setlocalStream(stream);
-    })
-    .catch((err)=>{
-      console.log("Error in fetching media stream:",err);
-    })
-    //  console.log(localStream);
+  
      //Connect to peers (or start connection) with WebRTC
      const provider = new WebrtcProvider(roomId,doc); //room1, room2
     console.log(provider.awareness);
-    setCurrentPeerId(provider.awareness.clientID);
-    provider.awareness.setLocalStateField('user',{name: "user0", color: myColor, id: provider.awareness.clientID});
+    provider.awareness.setLocalStateField('user',{name: userName, color: myColor, id: provider.awareness.clientID});
     
     // setAwarenessState(provider.awareness);
 
@@ -86,80 +76,6 @@ function IDE() {
      
   } 
 
-  useEffect(()=>{
-    console.log(localStream);
-    const peer = new Peer(currentPeerId,{
-      key: "peerjs",
-      host: "localhost",
-		  port: 9000,
-		  path: "/",
-    });
-    peer.on("open", () => {
-      setCurrentPeer(peer);
-      setPeers((prevPeers)=> [...prevPeers,peer]);
-      console.log("MY peerJS id is:", peer.id);
-    });
-
-    peer.on("call",incoming=>{
-      console.log(incoming);
-      incoming.answer(localStream);
-      incoming.on('stream',stream=>{
-        // console.log(stream);
-        const audio = new Audio();
-        audio.srcObject = stream;
-        audio.play();
-      })
-    });
-    
-    peer.on('close',()=>{
-      peer.destroy();
-    })
-  },[currentPeerId,localStream]);
-
-  
-
-  const handleCall = () => {
-    if(!users || !currentPeer){
-      alert("Please wait");
-      return;
-    }
-
-      users.forEach((user)=>{
-        if(user.id != currentPeerId){
-          const peerConnection = new Peer(user.id,{
-            key: "peerjs",
-            host: "localhost",
-		        port: 9000,
-		        path: "/",
-          });
-          peerConnection.on('open',()=>{
-            setPeers((prevPeers)=> [...prevPeers,peerConnection]);
-            console.log("connected to peer id: "+ peerConnection.id);
-          })
-          const outgoing = currentPeer.call(peerConnection.id,localStream); //call all the peers present in the room
-          console.log(outgoing);
-          outgoing.on("open",()=>{
-            console.log("Outgoing call");
-          })
-
-          
-          outgoing.on('stream',(stream)=>{
-            console.log(stream);
-            const audio = new Audio();
-            audio.srcObject = stream;
-            audio.play();
-          })
-
-          outgoing.on('error',(err)=>{
-          console.error(`error in establishing call to ${peerConnection.id} :`,err);
-          })
-        }
-      })
-    
-  }
-
-
-
 
 
   return (
@@ -178,7 +94,6 @@ function IDE() {
       </li>
       ))}
       </ul>}
-      <Button variant="filled" onClick={handleCall}>Call Peers</Button>
     </div>
     <Editor
       height="100vh"
