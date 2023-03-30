@@ -11,6 +11,7 @@ import { Button } from "@material-tailwind/react";
 import { IndexeddbPersistence } from 'y-indexeddb';
 import DOUsername from 'do_username';
 import "./IDE.css";
+import SideBar from './SideBar';
 
 
 function IDE() {
@@ -54,7 +55,8 @@ function IDE() {
      //Connect to peers (or start connection) with WebRTC
      const provider = new WebrtcProvider(roomId,doc); //room1, room2
     console.log(provider.awareness);
-    provider.awareness.setLocalStateField('user',{name: userName, color: myColor, id: provider.awareness.clientID});
+    const clientId = provider.awareness.clientID;
+    provider.awareness.setLocalStateField('user',{name: userName, color: myColor, id: clientId});
     
     // setAwarenessState(provider.awareness);
 
@@ -64,7 +66,29 @@ function IDE() {
       provider.awareness.getStates().forEach(state=>{
         if(state.user){
           strings.push({color: state.user.color,name: state.user.name, id: state.user.id});
-        }
+        
+        //   const cssRule = 
+        //   `.yRemoteSelection-${clientId} {
+        //     background-color: ${myColor}50;
+        //   }
+        //   .yRemoteSelectionHead-${clientId} {
+        //     border-left: ${myColor} solid 2px;
+        //     border-top: ${myColor} solid 2px;
+        //     border-bottom: ${myColor} solid 2px;
+        //   }
+        //   .yRemoteSelectionHead-${clientId}::after {
+        //     border-color: ${myColor};
+        //   }`;
+        //   const styleEl = document.createElement('style');
+        //   styleEl.textContent = 'text/css';
+        //   if (styleEl.styleSheet) {
+        //          styleEl.styleSheet.cssText = cssRule;
+        //   } else {
+        //          styleEl.appendChild(document.createTextNode(cssRule));
+        //   }
+        //     document.head.appendChild(styleEl);
+        
+      }
         
       })
       setUsers(strings);
@@ -81,8 +105,9 @@ function IDE() {
   return (
    <>
    <Navbar/>
-   <div className='flex items-stretch'>
-    <div className='w-1/2 pl-4 bg-white z-0'>
+   <div className='flex'>
+   <SideBar user={users}/>
+    <div className='w-1/2 h-screen pl-4 bg-white z-0 resize-x overflow-auto'>
        <h1>Hello Coder!</h1>
        Your Current Room Id is : {roomId}
        <br/>
@@ -90,17 +115,20 @@ function IDE() {
       {users && <ul>
       {users.map(user => (
       <li key={user.id} style={{ color: user.color }}>
-        {user.name}
+        {user === users[0]?user.name + " (You)": user.name}
       </li>
       ))}
       </ul>}
     </div>
+    <div className='w-1/2 h-screen overflow-auto resize-x'>
     <Editor
-      height="100vh"
-      width="50vw"
+      height="100%"
+      width="100%"
       theme="vs-dark"
+      defaultLanguage='javascript'
       onMount={handleEditorDidMount}
     />
+    </div>
   </div> 
   </>
 )}
