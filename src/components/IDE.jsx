@@ -16,6 +16,7 @@ import SideBar from './SideBar';
 
 function IDE() {
   const [users, setUsers] = useState(null); //keep track of users in the room (Yjs)
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const roomId = location.state.roomId;
   
@@ -100,13 +101,21 @@ function IDE() {
      
   } 
 
+  useEffect(()=>{
+    console.log(users);
+  })
+
 
 
   return (
    <>
    <Navbar/>
    <div className='flex'>
-   <SideBar user={users}/>
+   <SideBar 
+   user={users}
+   isOpen={open}
+   changeOpen={setOpen}
+   />
     <div className='w-1/2 h-screen pl-4 bg-white z-0 resize-x overflow-auto'>
        <h1>Hello Coder!</h1>
        Your Current Room Id is : {roomId}
