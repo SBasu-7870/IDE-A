@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import Navbar from '../components/Navbar';
 import HandCoding from '../assets/HandCoding.svg'
 import DialogComponent from '../components/DialogComponent';
-import Typed from "react-typed";
-import 'react-typed/dist/animatedCursor.css';
+
 
 function Landing() {
   const [dialog,setDialog] = useState(false);
@@ -18,31 +17,8 @@ function Landing() {
     <div className="h-screen w-full">
       <div className="flex flex-wrap justify-center justify-items-center mt-16 mb-4 mx-6 p-2">
         <div className="w-1/2 p-4 ">
-        <p className="text-7xl font-mono font-bold antialiased">
-          <Typed
-          strings={[
-            "TEAMWORK"
-          ]}
-          typeSpeed={150}
-          showCursor={false}
-          style={{color:"orange",display: "inline-block",marginTop:"1rem"}}
-          />
-          <br/>
-          <Typed
-          strings={["MAKES"]}
-          startDelay={2200}
-          typeSpeed={150}
-          showCursor={false}
-          style={{color:"cyan",display: "inline-block",marginTop:"1rem"}}
-          />
-          <br/>
-          <Typed
-          strings={["DREAMWORK"]}
-          startDelay={3500}
-          typeSpeed={150}
-          showCursor={false}
-          style={{color:"orange",display: "inline-block",marginTop:"1rem"}}
-          />
+        <p className="text-7xl font-mono font-bold antialiased text-orange-400">
+          TeamWork <br/>Makes<br/>Dreamwork
         </p> 
         <p className="mt-10 font-mono text-xl text-white">
           Work, collaborate and ship together on the IDE-A code editor in real time. Join a room and start collaborating instantly. Together, we are stronger 🤝.

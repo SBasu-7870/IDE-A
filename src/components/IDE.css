@@ -1,4 +1,4 @@
-.yRemoteSelection {
+/* .yRemoteSelection {
     background-color: rgb(250, 129, 0, .5)
 }
 .yRemoteSelectionHead {
@@ -8,12 +8,42 @@
     border-bottom: orange solid 2px;
     height: 100%;
     box-sizing: border-box;
-}
-.yRemoteSelectionHead::after {
+} */
+/* .yRemoteSelectionHead::after {
     position: absolute;
     content: ' ';
     border: 3px solid orange;
     border-radius: 4px;
     left: -4px;
     top: -5px;
+} */
+
+.monaco-editor .cursors-layer .cursor {
+    background: #beaeae; 
+    background:linear-gradient(
+      #ffbc42,
+      #ffbc42,
+      #ffbc42
+    ); 
+    background: linear-gradient(
+      #ffbc42
+    ); 
+  }
+
+  
+code {
+    background-color: #ffffff12;
+    border-color: #f7faff1f;
+    color: #eff1f6bf;
+    border-radius: 10%;
+}
+
+
+pre {
+   background-color: #ffffff12; 
+   border-color: #f7faff1f;
+   color: #eff1f6bf;
+   border-radius: 0.765rem;
+   margin-top: 1rem;
+   padding: 0.5rem;
 }
