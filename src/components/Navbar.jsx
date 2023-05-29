@@ -3,7 +3,7 @@ import Logo from "../assets/IDE-A.svg";
 
 function Navbar() {
   return (
-    <nav className="bg-transparent px-2 py-4">
+    <nav className="bg-transparent px-2 py-2">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center sm:justify-start lg:justify-between">
           <button className="p-2 text-gray-600 color-white rounded cursor-pointer lg:hidden ">

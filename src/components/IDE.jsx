@@ -12,6 +12,17 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 import DOUsername from 'do_username';
 import "./IDE.css";
 import SideBar from './SideBar';
+// import {createUseStyles} from 'react-jss'
+
+
+// const useStyles = createUseStyles({
+//   yRemoteSelection: {
+//     backgroundColor: 'orange'
+//   },
+//   yRemoteSelectionHead: {
+    
+//   }
+// })
 
 
 function IDE() {
@@ -39,6 +50,9 @@ function IDE() {
 
   const myColor = usercolors[Math.floor(Math.random() * usercolors.length)];
   const userName = DOUsername.generate(10);
+  
+
+
 
   const handleEditorDidMount = (editor,monaco) => { //editor instance and monaco from the <Editor/> (defined by Monaco Editor) 
     editorRef.current = editor;  //Initialise Yjs
@@ -67,28 +81,6 @@ function IDE() {
       provider.awareness.getStates().forEach(state=>{
         if(state.user){
           strings.push({color: state.user.color,name: state.user.name, id: state.user.id});
-        
-        //   const cssRule = 
-        //   `.yRemoteSelection-${clientId} {
-        //     background-color: ${myColor}50;
-        //   }
-        //   .yRemoteSelectionHead-${clientId} {
-        //     border-left: ${myColor} solid 2px;
-        //     border-top: ${myColor} solid 2px;
-        //     border-bottom: ${myColor} solid 2px;
-        //   }
-        //   .yRemoteSelectionHead-${clientId}::after {
-        //     border-color: ${myColor};
-        //   }`;
-        //   const styleEl = document.createElement('style');
-        //   styleEl.textContent = 'text/css';
-        //   if (styleEl.styleSheet) {
-        //          styleEl.styleSheet.cssText = cssRule;
-        //   } else {
-        //          styleEl.appendChild(document.createTextNode(cssRule));
-        //   }
-        //     document.head.appendChild(styleEl);
-        
       }
         
       })
@@ -98,7 +90,6 @@ function IDE() {
       
      //Bind YJS to Monaco 
      const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);//editorRef.current.getModel()-> monaco specific; allows to see changes happening in Monaco
-     
   } 
 
   useEffect(()=>{
@@ -116,18 +107,33 @@ function IDE() {
    isOpen={open}
    changeOpen={setOpen}
    />
-    <div className='w-1/2 h-screen pl-4 bg-white z-0 resize-x overflow-auto'>
-       <h1>Hello Coder!</h1>
-       Your Current Room Id is : {roomId}
-       <br/>
-       <h2 >The users in this room are:</h2>
-      {users && <ul>
-      {users.map(user => (
-      <li key={user.id} style={{ color: user.color }}>
-        {user === users[0]?user.name + " (You)": user.name}
-      </li>
-      ))}
-      </ul>}
+    <div className='w-1/2 h-screen pl-4 bg-code text-white z-0 resize-x overflow-auto'>
+      <div className='flex justify-center text-white text-2xl mt-5'>Two Sum</div>
+      <div className='mx-5'>
+         <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to </em><code>target</code>.</p>
+         <br/>
+         <p>You may assume that each input would have <b><em>exactly</em> one solution</b>, and you may not use the same element <em>twice</em>.</p>
+         <br/>
+         <p>You can return the answer in any order.</p>
+      </div>
+      <div className='mt-10'>
+        <p><strong>Example 1</strong></p>
+        <pre className='mr-4 mt-5'>
+         <strong>Input:</strong>  nums = [2,7,11,15], target = 9
+         <br/>
+         <strong>Output:</strong> [0,1]
+         <br/>
+         <strong>Explanation:</strong> Because nums[0] + nums[1] == 9,
+         <br/>
+         we return [0, 1].
+        </pre>
+
+        <pre className='mr-4 mt-10'>
+         <strong>Input:</strong>  nums = [3,2,4], target = 6
+         <br/>
+         <strong>Output:</strong> [1,2]
+        </pre>
+      </div>
     </div>
     <div className='w-1/2 h-screen overflow-auto resize-x'>
     <Editor
@@ -138,7 +144,7 @@ function IDE() {
       onMount={handleEditorDidMount}
     />
     </div>
-  </div> 
+  </div>
   </>
 )}
 
