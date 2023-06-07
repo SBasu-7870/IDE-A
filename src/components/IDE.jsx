@@ -12,6 +12,7 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 import DOUsername from 'do_username';
 import "./IDE.css";
 import SideBar from './SideBar';
+import Console from './Console';
 // import {createUseStyles} from 'react-jss'
 
 
@@ -32,10 +33,43 @@ function IDE() {
   const roomId = location.state.roomId;
   
   const editorRef = useRef(null);
-  const peerRef = useRef({});
   //Editor->value = YJS Text Value(A text value shared by multiple people)
   // One person deletes text -> Deletes from overall shared text value
   // Handled by YJS (a high performance CRDT(Conflict-Free Replicated Data Type))
+  const resizableContainerRef = useRef(null);
+  const resizerRef = useRef(null);
+  const startXRef = useRef(null);
+  
+  useEffect(()=>{
+    console.log(users);
+    const resizableContainer = resizableContainerRef.current;
+    const resizer = resizerRef.current;
+
+    const handleMouseDown = (event) => {
+      startXRef.current = event.clientX;
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    };
+
+    const handleMouseMove = (event) => {
+      const diffX = event.clientX - startXRef.current;
+      const newWidth = resizableContainer.offsetWidth - diffX;
+      resizableContainer.style.width = `${newWidth}px`;
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    resizer.addEventListener('mousedown', handleMouseDown);
+
+    return () => {
+      resizer.removeEventListener('mousedown', handleMouseDown);
+    };
+  })
+
+
 
   const usercolors = [
     '#30bced',
@@ -51,11 +85,22 @@ function IDE() {
   const myColor = usercolors[Math.floor(Math.random() * usercolors.length)];
   const userName = DOUsername.generate(10);
   
-
+  const codeValue = `
+  /**
+  * @param {number[]} nums
+  * @param {number} target
+  * @return {number[]}
+  */
+ var twoSum = function(nums, target) {
+     
+ };`
 
 
   const handleEditorDidMount = (editor,monaco) => { //editor instance and monaco from the <Editor/> (defined by Monaco Editor) 
     editorRef.current = editor;  //Initialise Yjs
+
+    editorRef.current.value = 'Hello';
+    console.log(editorRef.current.getValue());
     
 
      const doc = new Y.Doc(); //collection of shared objects -> Text
@@ -69,7 +114,6 @@ function IDE() {
   
      //Connect to peers (or start connection) with WebRTC
      const provider = new WebrtcProvider(roomId,doc); //room1, room2
-    console.log(provider.awareness);
     const clientId = provider.awareness.clientID;
     provider.awareness.setLocalStateField('user',{name: userName, color: myColor, id: clientId});
     
@@ -92,9 +136,6 @@ function IDE() {
      const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);//editorRef.current.getModel()-> monaco specific; allows to see changes happening in Monaco
   } 
 
-  useEffect(()=>{
-    console.log(users);
-  })
 
 
 
@@ -107,7 +148,8 @@ function IDE() {
    isOpen={open}
    changeOpen={setOpen}
    />
-    <div className='w-1/2 h-screen pl-4 bg-code text-white z-0 resize-x overflow-auto'>
+    <div className='flex flex-col grow h-screen px-4 bg-code text-white overflow-auto'>
+      <div></div>
       <div className='flex justify-center text-white text-2xl mt-5'>Two Sum</div>
       <div className='mx-5'>
          <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to </em><code>target</code>.</p>
@@ -133,9 +175,24 @@ function IDE() {
          <br/>
          <strong>Output:</strong> [1,2]
         </pre>
+
+
+
+        <strong className='mt-10'>Constraints:</strong>
+        <br/>
+        <ul className='list-disc'>
+          <li className='ml-5 mt-2'><code>{`2 <= nums.length <= 10^4`}</code></li>
+          <li className='ml-5 mt-2'><code>{`-10^9 <= nums[i] <= 10^9`}</code></li>
+          <li className='ml-5 mt-2'><code>{`10^9 <= target <= 10^9`}</code></li>
+          <li className='ml-5 mt-2'><b>Only one valid answer exists.</b></li>
+        </ul>
+
+        <p className='mt-5'><b>Follow-up:</b> Can you come up with an algorithm that is less than <code>O(n^2)</code> time complexity?</p>
       </div>
+      <Console/>
     </div>
-    <div className='w-1/2 h-screen overflow-auto resize-x'>
+    <div ref={resizerRef} className='resizer flex items-center bg-blue-gray-400 hover:bg-blue-700 w-2'></div>
+    <div ref={resizableContainerRef} className='flex grow h-screen overflow-auto'>
     <Editor
       height="100%"
       width="100%"
