@@ -35,7 +35,8 @@ code {
     background-color: #ffffff12;
     border-color: #f7faff1f;
     color: #eff1f6bf;
-    border-radius: 10%;
+    border-radius: 0.765rem;
+    padding: 0.2rem;
 }
 
 
@@ -47,3 +48,13 @@ pre {
    margin-top: 1rem;
    padding: 0.5rem;
 }
+
+.resizable {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.resizer {
+  cursor: col-resize;
+}
+
