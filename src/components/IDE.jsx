@@ -99,10 +99,8 @@ function IDE() {
   const handleEditorDidMount = (editor,monaco) => { //editor instance and monaco from the <Editor/> (defined by Monaco Editor) 
     editorRef.current = editor;  //Initialise Yjs
 
-    editorRef.current.value = 'Hello';
-    console.log(editorRef.current.getValue());
     
-
+  
      const doc = new Y.Doc(); //collection of shared objects -> Text
      const yarray = doc.getArray(roomId);
      
@@ -131,6 +129,8 @@ function IDE() {
       setUsers(strings);
     })
      const type = doc.getText("monaco"); // doc {"monaco" : "what our IDE is showing"}
+     
+     type.format(0,137,codeValue);
       
      //Bind YJS to Monaco 
      const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);//editorRef.current.getModel()-> monaco specific; allows to see changes happening in Monaco
